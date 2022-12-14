@@ -1,35 +1,44 @@
 <template>
     <h1>Gifts View</h1>
+    <Search @busqueda="obtenerGifts"/>
+    <Loading v-if="loading"/>
     <div class="row">
         <div v-for="gift in gifts" class="col-12 col-md-4" :key="gift.id">
-            <div class="card p-3" >
-                <img :src="gift.images.original.url" class="card-img-top" :alt="gift.id" loading="lazy">
-                <div class="card-body">
-                    <h5 class="card-title">{{ gift.title }}</h5>
-                    <a href="#" class="btn btn-primary">Download</a>
-                </div>
-            </div>
+            <Card :gift="gift"/>
         </div>
     </div>
 </template>
 
 <script>
+    import Card from '../components/Card.vue';
+    import Search from '../components/Search.vue';
+    import Loading from '../components/Loading.vue';
+
 export default {
     data: () => ({
         gifts: [],
+        loading:true
     }),
     created() {
         this.obtenerGifts();
     },
     methods: {
-        async obtenerGifts() {
+        async obtenerGifts(buscar="pokemon") {
+            if(buscar.trim()===""){
+                console.log("vacio");
+                alert("sin busqueda");
+                return;
+            }
+            this.loading=true;
             console.log("Obtener gifts")
-            const r = await fetch(`http://api.giphy.com/v1/gifs/search?api_key=vHkuTqE586dExyzjDFyM6gscseBPHAar&q=pikachu&limit=10`);
+            const r = await fetch(`http://api.giphy.com/v1/gifs/search?api_key=vHkuTqE586dExyzjDFyM6gscseBPHAar&q=${buscar}&limit=10`);
             const { data } = await r.json();
             console.log(data);
             this.gifts = data;
+            this.loading=false;
         }
-    }
+    },
+    components: {Card,Search,Loading}
 }
 </script>
 
