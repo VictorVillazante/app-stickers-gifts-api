@@ -31,7 +31,7 @@ export default {
             }
             this.loading=true;
             console.log("Obtener gifts")
-            const r = await fetch(`http://api.giphy.com/v1/gifs/search?api_key=vHkuTqE586dExyzjDFyM6gscseBPHAar&q=${buscar}&limit=10`);
+            const r = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=vHkuTqE586dExyzjDFyM6gscseBPHAar&q=${buscar}&limit=10`);
             const { data } = await r.json();
             console.log(data);
             this.gifts = data;
